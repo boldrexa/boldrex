@@ -12,11 +12,8 @@ def listen():
 	while True:
 		data = stream.read(4000, exception_on_overflow=False)
 		if (rec.AcceptWaveform(data)) and (len(data) > 0):
-			answer['text']:
-		 		yield answer['text']
+			answer = json.loads(rec.Result())
+			if answer['text']:
+		 	 yield answer['text']
 for text in listen():
-	if text == 'пока':
-		quit()
-
-		elif text == 'здравствуй'
-			print('Здравствуйте сер')
+	print('text')
