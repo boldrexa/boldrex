@@ -1,0 +1,25 @@
+ # отделение команд от дополнительной информации (аргументов)
+    if voice_input:
+        voice_input_parts = voice_input.split(" ")
+
+        # если было сказано одно слово - выполняем команду сразу 
+        # без дополнительных аргументов
+        if len(voice_input_parts) == 1:
+            intent = get_intent(voice_input)
+            if intent:
+                config["intents"][intent]["responses"]()
+            else:
+                config["failure_phrases"]()
+
+        # в случае длинной фразы - выполняется поиск ключевой фразы 
+        # и аргументов через каждое слово,
+        # пока не будет найдено совпадение
+        if len(voice_input_parts) > 1:
+            for guess in range(len(voice_input_parts)):
+                intent = get_intent((" ".join(voice_input_parts[0:guess])).strip())
+                if intent:
+                    command_options = [voice_input_parts[guess:len(voice_input_parts)]]
+                    config["intents"][intent]["responses"](*command_options)
+                    break
+                if not intent and guess == len(voice_input_parts)-1:
+                    config["failure_phrases"]()
